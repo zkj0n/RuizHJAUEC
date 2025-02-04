@@ -7,6 +7,14 @@ public class Codigo implements Serializable {
     private Integer id;
     private String tipo;
 
+    public Codigo() {
+    }
+
+    public Codigo(Integer id, String tipo) {
+        this.id = id;
+        this.tipo = tipo;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -1,5 +1,9 @@
 package es.albarregas.controllers;
 
+import es.albarregas.DAO.IProfesorDAO;
+import es.albarregas.DAO.ProfesorDAO;
+import es.albarregas.beans.Profesor;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -8,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.List;
 
 @WebServlet(name = "FrontController", value = "/FrontController")
 public class FrontController extends HttpServlet {
@@ -39,18 +44,25 @@ public class FrontController extends HttpServlet {
             throws ServletException, IOException {
         String accion = request.getParameter("accion");
         String url= ".";
-
+        IProfesorDAO profesorDAO = new ProfesorDAO();
+        List<Profesor> profesores = null;
         switch (accion.substring(0, 1).toLowerCase()){
             case "c":
                 url = "./JSP/create/create.jsp";
             break;
             case "r":
+                profesores = profesorDAO.get();
+                request.setAttribute("profesores", profesores);
                 url = "./JSP/read/read.jsp";
             break;
             case "u":
+                profesores = profesorDAO.get();
+                request.setAttribute("profesores", profesores);
                 url = "./JSP/update/update.jsp";
             break;
             case "d":
+                profesores = profesorDAO.get();
+                request.setAttribute("profesores", profesores);
                 url = "./JSP/delete/delete.jsp";
             break;
         }

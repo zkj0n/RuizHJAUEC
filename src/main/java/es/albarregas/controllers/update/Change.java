@@ -2,9 +2,11 @@ package es.albarregas.controllers.update;
 
 import es.albarregas.DAO.IProfesorDAO;
 import es.albarregas.DAO.ProfesorDAO;
+import es.albarregas.beans.Codigo;
 import es.albarregas.beans.Profesor;
 import es.albarregas.models.ProfesorModel;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConvertUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -46,7 +48,9 @@ public class Change extends HttpServlet {
         IProfesorDAO profesorDAO = new ProfesorDAO();
         String url;
         try {
+            ConvertUtils.register(new org.apache.commons.beanutils.converters.SqlTimestampConverter(null), java.util.Calendar.class);
             BeanUtils.populate(profesor, request.getParameterMap());
+            profesor.setCodigo(new Codigo(Integer.parseInt(request.getParameter("id")), request.getParameter("tipo")));
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
@@ -61,6 +65,7 @@ public class Change extends HttpServlet {
             } else {
                 profesorDAO.update(profesor);
                 request.setAttribute("p", profesor);
+                request.setAttribute("mensaje", "profesor modificado");
                 url = "./JSP/read/readOne.jsp";
             }
 

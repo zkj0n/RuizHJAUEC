@@ -15,15 +15,37 @@
     <c:if test="${requestScope.p.nombre != null}">
         <form action="Change" method="post" class="mx-auto p-5 bg-light rounded-3 shadow-lg w-50">
             <div class="form-floating mb-3">
-                <input type="text"
+                <input type="number"
                        class="form-control"
                        id="id"
                        placeholder="id"
                        name="id"
-                       value="${requestScope.p.id}"
+                       value="${requestScope.p.codigo.id}"
                        readonly>
 
                 <label for="id">id</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text"
+                       class="form-control"
+                       id="tipo"
+                       placeholder="tipo"
+                       name="tipo"
+                       value="${requestScope.p.codigo.tipo}"
+                       readonly>
+
+                <label for="tipo">tipo</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="datetime-local"
+                       class="form-control"
+                       id="fecha"
+                       placeholder="fecha"
+                       name="fecha"
+                       value="${requestScope.p.fechaFormateada}"
+                       >
+
+                <label for="fecha">fecha</label>
             </div>
             <div class="form-floating mb-3">
                 <input type="text"

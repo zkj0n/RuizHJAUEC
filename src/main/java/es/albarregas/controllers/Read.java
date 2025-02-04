@@ -42,13 +42,14 @@ public class Read extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id = request.getParameter("id");
-        String tipo = request.getParameter("tipo");
-        Codigo pk = new Codigo();
-        pk.setId(Integer.parseInt(id));
-        pk.setTipo(tipo);
+
         String url;
         IProfesorDAO profesorDAO = new ProfesorDAO();
         if (id != null && !id.isEmpty()) {
+            String tipo = request.getParameter("tipo");
+            Codigo pk = new Codigo();
+            pk.setId(Integer.parseInt(id));
+            pk.setTipo(tipo);
             Profesor profesor = profesorDAO.getOne(pk);
             if (profesor != null) {
                 request.setAttribute("p", profesor);

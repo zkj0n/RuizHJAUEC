@@ -42,28 +42,19 @@ public class Update extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("id");
-        String tipo = request.getParameter("tipo");
-
-        Codigo pk = new Codigo();
-        pk.setId(Integer.parseInt(id));
-        pk.setTipo(tipo);
+        String codigo = request.getParameter("codigo");
+        Codigo pk = new Codigo(Integer.parseInt(codigo.split("-")[0]), codigo.split("-")[1]);
         String url;
-        if (id != null && !id.isEmpty()) {
-            IProfesorDAO profesorDAO = new ProfesorDAO();
-            Profesor profesor;
-            profesor = profesorDAO.getOne((pk));
-            if (profesor != null) {
-                request.setAttribute("p", profesor);
-                url = "./JSP/update/change.jsp";
-            } else {
-                request.setAttribute("error", "no se ha encontrado ningún profesor con ese id");
-                url = "./JSP/update/update.jsp";
-            }
+        IProfesorDAO profesorDAO = new ProfesorDAO();
+        Profesor profesor = profesorDAO.getOne(pk);
+        if (profesor != null) {
+            request.setAttribute("p", profesor);
+            url = "./JSP/update/change.jsp";
         } else {
-            request.setAttribute("error", "no se ha seleccionado ningún profesor");
+            request.setAttribute("error", "no se ha encontrado ningún profesor con ese id");
             url = "./JSP/update/update.jsp";
         }
+
         request.getRequestDispatcher(url).forward(request, response);
     }
 

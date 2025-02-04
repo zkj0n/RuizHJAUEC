@@ -73,9 +73,12 @@ public class Profesor implements Serializable{
     }
 
     public String getFechaFormateada() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd de MMMM de yyyy a las HH:mm");
-        fechaFormateada = sdf.format(fecha.getTime());
-        return fechaFormateada;
+        if (fecha == null) {
+            return "Fecha no disponible";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        return sdf.format(fecha.getTime());
     }
+
 
 }

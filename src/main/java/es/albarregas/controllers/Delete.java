@@ -43,27 +43,29 @@ public class Delete extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("id");
-        String tipo = request.getParameter("tipo");
-        Codigo pk = new Codigo();
-        pk.setId(Integer.parseInt(id));
-        pk.setTipo(tipo);
+        IProfesorDAO profesorDAO = new ProfesorDAO();
         String url;
-        if (id == null || id.isEmpty()) {
-            request.setAttribute("error", "el id no puede ser nulo");
-            url = "./JSP/delete/delete.jsp";
-        } else {
-            IProfesorDAO profesorDAO = new ProfesorDAO();
-            Profesor profesor = profesorDAO.getOne(pk);
+
+        try {
+            String codigo = request.getParameter("codigo");
+            Codigo c = new Codigo(Integer.parseInt(codigo.split("-")[0]), codigo.split("-")[1]);
+
+            Profesor profesor = profesorDAO.getOne(c);
+
             if (profesor != null) {
                 profesorDAO.delete(profesor);
                 request.setAttribute("p", profesor);
-                url = "./JSP/delete/salida.jsp";
+                request.setAttribute("mensaje", "profesor eliminado");
+                url = "./JSP/read/readOne.jsp";
             } else {
-                request.setAttribute("error", "no existe un profesor con el id " + id);
+                request.setAttribute("error", "Profesor no encontrado");
                 url = "./JSP/delete/delete.jsp";
             }
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "id no válido");
+            url = "./JSP/delete/delete.jsp";
         }
+
         request.getRequestDispatcher(url).forward(request, response);
     }
 

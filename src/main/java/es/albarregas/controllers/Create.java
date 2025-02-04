@@ -2,6 +2,7 @@ package es.albarregas.controllers;
 
 import es.albarregas.DAO.IProfesorDAO;
 import es.albarregas.DAO.ProfesorDAO;
+import es.albarregas.beans.Codigo;
 import es.albarregas.beans.Profesor;
 import es.albarregas.models.ProfesorModel;
 import org.apache.commons.beanutils.BeanUtils;
@@ -48,17 +49,36 @@ public class Create extends HttpServlet {
         String url;
         try {
             BeanUtils.populate(profesor, request.getParameterMap());
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException(e);
-        }
+            String id = request.getParameter("id");
+            String tipo = request.getParameter("tipo");
 
-        if (ProfesorModel.validarProfesor(profesor)) {
-            IProfesorDAO profesorDAO = new ProfesorDAO();
-            profesorDAO.add(profesor);
-            request.setAttribute("p", profesor);
-            url = "./JSP/read/readOne.jsp";
-        } else {
-            request.setAttribute("error", "el nombre y el primer apellido son obligatorios");
+            if (id == null || id.trim().isEmpty() || tipo == null || tipo.trim().isEmpty()) {
+                request.setAttribute("error", "el código del profesor no puede ser nulo o vacío");
+                url = "./JSP/create/create.jsp";
+            } else {
+                profesor.setCodigo(new Codigo(Integer.parseInt(id), tipo));
+
+                if (ProfesorModel.validarProfesor(profesor)) {
+                    IProfesorDAO profesorDAO = new ProfesorDAO();
+                    Profesor profesorAntiguo = profesorDAO.getOne(profesor.getCodigo());
+
+                    if (profesorAntiguo != null) {
+                        request.setAttribute("error", "ya existe un profesor con ese código");
+                        request.setAttribute("p", profesor);
+                        url = "./JSP/create/create.jsp";
+                    } else {
+                        profesorDAO.add(profesor);
+                        request.setAttribute("p", profesor);
+                        request.setAttribute("mensaje", "profesor añadido");
+                        url = "./JSP/read/readOne.jsp";
+                    }
+                } else {
+                    request.setAttribute("error", "todos los campos salvo el segundo apellido son obligatorios");
+                    url = "./JSP/create/create.jsp";
+                }
+            }
+        } catch (IllegalAccessException | InvocationTargetException | NumberFormatException e) {
+            request.setAttribute("error", "Error al procesar el formulario");
             url = "./JSP/create/create.jsp";
         }
 

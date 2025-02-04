@@ -15,7 +15,7 @@
     <form action="Create" method="post" class="mx-auto p-5 bg-light rounded-3 shadow-lg w-50">
 
         <div class="form-floating mb-3">
-            <input type="text"
+            <input type="number"
                    class="form-control"
                    id="id"
                    placeholder="id"
@@ -58,7 +58,7 @@
                    placeholder="segundo apellido"
                    name="ape2">
 
-            <label for="ape2">apellido</label>
+            <label for="ape2">segundo apellido</label>
         </div>
         <button class="btn btn-outline-primary w-100" type="submit">
             crear

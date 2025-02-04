@@ -14,18 +14,20 @@
     <table class="mx-auto p-5 bg-light rounded-3 shadow-lg w-50 table">
         <thead class="table-secondary">
         <tr>
-            <th>nombre</th>
-            <th>primer apellido</th>
-            <th>apellido</th>
+            <th>id</th>
+            <th>tipo</th>
+            <th>nombre y apellidos</th>
+            <th>fecha</th>
         </tr>
         </thead>
         <tbody class="table-primary">
         <c:if test="${requestScope.profesores.size() > 0}">
             <c:forEach items="${requestScope.profesores}" var="p">
                 <tr>
-                    <td>${p.nombre}</td>
-                    <td>${p.ape1}</td>
-                    <td>${p.ape2}</td>
+                    <td>${p.codigo.id}</td>
+                    <td>${p.codigo.tipo}</td>
+                    <td>${p.nombre} ${p.ape1} ${p.ape2}</td>
+                    <td>${p.fechaFormateada}</td>
                 </tr>
             </c:forEach>
         </c:if>
